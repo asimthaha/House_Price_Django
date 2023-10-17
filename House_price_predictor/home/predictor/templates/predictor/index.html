@@ -2,58 +2,55 @@
 {% extends './base.html' %}
 <html>
   <head>
-    <title>Condominium</title>
+    <title>Domus Meus</title>
   </head>
   <body>
     {% block content %}
-    <!--carousel-start-->
-          <div class="banner slider">
-            <div
-              id="carousel"
-              class="carousel slide carousel-dark carousel-fade"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner" data-bs-ride="carousel">
-                {% for images in data %}
-                <div
-                  class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}"
-                  data-bs-interval="3000"
-                >
-                  <div class="carousel-caption align-items-center register-left ">
-                    <div class="col-md-12">
-                      <img src="http://www.ansonika.com/mavia/img/registration_bg.svg" alt="" />
-                      <h3 class="text-white">Welcome</h3>
-                      <p class="text-light text-monospace font-weight-bold">Register Your Account</p>
+    <article class="row">
+      <!--carousel-start-->
+      <section class="">
+        <div class="banner slider">
+          <div
+            id="carousel"
+            class="carousel slide carousel-dark carousel-fade"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-inner" data-bs-ride="carousel">
+              {% for images in data %}
+              <div
+                class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}"
+                data-bs-interval="3000"
+              >
+                <div class="carousel-caption align-items-center register-left">
+                  <div class="col-md-12">
+                    <img
+                      src="http://www.ansonika.com/mavia/img/registration_bg.svg"
+                      alt=""
+                    />
+                    <h3 class="text-white">Welcome</h3>
+                    <div class="">
+                      <a
+                        class="btn btn-primary col-md-4 p-2 mb-3"
+                        role="button"
+                        href="{% url 'predictor:predict_price' %}"
+                        >Predict Price</a
+                      >
                     </div>
                   </div>
-                  <img
-                    src="{{ images.photo.url }}"
-                    class="carousel-img d-block w-100 rounded"
-                    alt="Los Angeles"
-                  />
-
                 </div>
-                {% endfor %}
+                <img
+                  src="{{ images.photo.url }}"
+                  class="carousel-img d-block w-100 rounded"
+                  alt="Los Angeles"
+                />
               </div>
+              {% endfor %}
             </div>
           </div>
-          <!--	carousel-end-->
-    <form method="post">
-      {% csrf_token %}
-      <label for="num_rooms">Number of Rooms:</label>
-      <input type="number" name="num_rooms" /><br /><br />
-
-      <label for="num_bathrooms">Number of Bathrooms:</label>
-      <input type="number" name="num_bathrooms" /><br /><br />
-
-      <label for="num_kitchens">Number of Kitchens:</label>
-      <input type="number" name="num_kitchens" /><br /><br />
-
-      <label for="area">Area (in square feet):</label>
-      <input type="number" name="area" /><br /><br />
-
-      <input type="submit" value="Predict Price" />
-    </form>
+        </div>
+      </section>
+      <!--	carousel-end-->
+    </article>
 
     {% if predicted_price %}
     <h2>Predicted House Price: ${{ predicted_price }}</h2>
