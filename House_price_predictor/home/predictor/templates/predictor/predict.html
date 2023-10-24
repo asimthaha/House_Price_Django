@@ -1,15 +1,57 @@
-{% extends './base.html' %}
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
   </head>
   <body>
-    {% block content %}
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand px-lg-5 px-sm-3" href="/"
+          ><div>
+            <span class="text-warning h2">DOMUS</span
+            ><span class="text-light h2"> MEUS</span>
+          </div></a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link px-md-5 px-sm-3"
+                href="{% url 'predictor:predict_price' %}"
+                >Predict</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
     <main class="container d-flex justify-content-center">
     <!--    form starts-->
-   <section class="col-6 d-flex justify-content-center">
+   <section class="col-sm-12 col-md-6 d-flex justify-content-center">
     <div class="card">
       <div class="card-body">
         <div class="text-center" id="myTabContent">
@@ -19,8 +61,7 @@
             <form
               method="POST"
               action="{% url 'predictor:predict_price' %}"
-              onsubmit="return validateConfirmPassword()"
-              class="needs-validation"
+              class="was-validated"
               novalidate
             >
               {% csrf_token %}
@@ -34,7 +75,7 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="overall_qual"
                           placeholder="1-10 *"
@@ -54,7 +95,7 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="grliv_area"
                           placeholder="Area in square feet *"
@@ -74,7 +115,7 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="garage_cars"
                           placeholder="number of cars in garage *"
@@ -94,7 +135,7 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="total_bsmt_sf"
                           placeholder="Basement area in square feet *"
@@ -114,7 +155,7 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="first_flr_sf"
                           placeholder="square Footage of 1st floor *"
@@ -134,7 +175,7 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="full_bath"
                           placeholder="number of bathrooms *"
@@ -154,7 +195,7 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="tot_rms_abv_grd"
                           placeholder="number of bedrooms *"
@@ -174,11 +215,14 @@
                         </div>
                         <input
                           required
-                          type="text"
+                          type="number"
                           class="form-control"
                           name="year_built"
                           placeholder=" year of construction *"
                         />
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
                         <div class="invalid-feedback">
                           Please choose a number.
                         </div>
@@ -189,7 +233,7 @@
                   <div class="form-element">
                     <div class="">
                       <input
-                        class="btn btn-outline-primary col-md-4 p-2 mb-3"
+                        class="btn btn-outline-dark col-md-4 p-2 mb-3"
                         type="submit"
                         value="Predict"
                       />
@@ -206,42 +250,45 @@
       </div>
     </div>
    </section>
-   <section class="col-6 d-flex flex-column justify-content-center align-items-center">
+   <section class="col-sm-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
     <div>
         <h3>Predicted Result</h3>
         {% if predicted_price is not None %}
-            <p>Predicted Price: Rs:{{ predicted_price }}</p>
+            <p>Predicted Price: $:{{ predicted_price }}</p>
+            <p>The predicted result may vary depending on number of reasons</p>
         {% else %}
             <p>No prediction available.</p>
         {% endif %}
     </div>
   </section>
-  {% endblock %}
 </main>
   </body>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"
+  ></script>
   <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
-      "use strict";
-  
-      // Fetch all the forms we want to apply custom Bootstrap validation styles to
-      var forms = document.querySelectorAll(".needs-validation");
-  
-      // Loop over them and prevent submission
-      Array.prototype.slice.call(forms).forEach(function (form) {
-        form.addEventListener(
-          "submit",
-          function (event) {
-            if (!form.checkValidity()) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-  
-            form.classList.add("was-validated");
-          },
-          false
-        );
-      });
-    })();
-  </script>
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+    </script>
+    
 </html>
